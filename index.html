@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALPHA ACADEMY | Интенсив 5x5</title>
+    <title>ALPHA ACADEMY | Школа Будущего</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .hero-gradient { background: radial-gradient(circle at 50% 50%, #4f46e5 0%, #1e1b4b 100%); }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+        .card-shadow { box-shadow: 0 20px 50px -12px rgba(79, 70, 229, 0.2); }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900" 
+<body class="bg-[#0f172a] text-white" 
       x-data="{ 
         view: 'home', 
         activeDay: 'День 1',
@@ -28,118 +28,89 @@
         }
       }">
 
-    <nav class="fixed w-full z-50 glass border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
+    <nav class="fixed w-full z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center glass rounded-2xl px-6 py-3">
             <div class="flex items-center space-x-2 cursor-pointer" @click="view = 'home'">
-                <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">α</div>
-                <span class="text-xl font-extrabold tracking-tight italic">ALPHA<span class="text-indigo-600">SCHOOL</span></span>
+                <div class="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center font-black text-2xl shadow-lg shadow-indigo-500/20">A</div>
+                <span class="text-xl font-bold tracking-tight">ALPHA<span class="text-indigo-400">.EDU</span></span>
             </div>
-            <div class="flex items-center space-x-4">
-                <button @click="view = 'home'" class="text-sm font-bold text-slate-500 hover:text-indigo-600 transition">Главная</button>
-                <div class="h-4 w-px bg-slate-300"></div>
-                <span class="text-xs font-bold bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full uppercase">Интенсив 5 дней</span>
+            <div class="hidden md:flex space-x-8 text-sm font-semibold text-slate-300">
+                <a href="#" @click="view = 'home'" class="hover:text-white transition">Главная</a>
+                <a href="#about" x-show="view === 'home'" class="hover:text-white transition">О нас</a>
             </div>
+            <button @click="view = 'learning'" class="bg-indigo-500 hover:bg-indigo-600 px-6 py-2.5 rounded-xl text-sm font-bold transition shadow-lg shadow-indigo-500/25">
+                Личный кабинет
+            </button>
         </div>
     </nav>
 
-    <main x-show="view === 'home'" x-transition class="pt-32 pb-20 px-6">
-        <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-16">
-                <h1 class="text-5xl font-black mb-6 tracking-tight">Программа обучения <span class="text-indigo-600">5x5</span></h1>
-                <p class="text-slate-500 text-lg">Пять дней глубокого погружения. По пять ключевых уроков в каждом дне.</p>
+    <main x-show="view === 'home'" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-95">
+        <section class="min-h-screen flex items-center justify-center pt-20 px-6 hero-gradient relative overflow-hidden">
+            <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 40px 40px;"></div>
+            <div class="max-w-5xl mx-auto text-center relative z-10">
+                <span class="inline-block px-4 py-1.5 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-black uppercase tracking-[0.2em] mb-6 border border-indigo-500/20">Мировой стандарт обучения</span>
+                <h1 class="text-6xl md:text-8xl font-black mb-8 leading-[1.1] tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400">
+                    Твое будущее <br> начинается здесь.
+                </h1>
+                <p class="text-xl text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+                    Интенсивная программа обучения 5х5. 5 дней полной трансформации под руководством ведущих экспертов и Альфа-разума.
+                </p>
+                <div class="flex flex-col md:flex-row justify-center gap-6">
+                    <button @click="view = 'learning'" class="bg-white text-[#0f172a] px-10 py-5 rounded-2xl font-black text-lg hover:bg-indigo-400 hover:text-white transition shadow-2xl">
+                        Начать обучение бесплатно
+                    </button>
+                    <button class="glass px-10 py-5 rounded-2xl font-black text-lg hover:bg-white/10 transition">
+                        Смотреть демо
+                    </button>
+                </div>
             </div>
+        </section>
+
+        <section id="about" class="py-24 bg-[#0f172a] px-6">
+            <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-12 text-center font-bold uppercase tracking-widest text-sm text-slate-500">
+                <div><span class="block text-4xl text-white mb-2 font-black">50К+</span> Учеников по миру</div>
+                <div><span class="block text-4xl text-white mb-2 font-black">25</span> Уникальных уроков</div>
+                <div><span class="block text-4xl text-white mb-2 font-black">100%</span> Практики</div>
+            </div>
+        </section>
+    </main>
+
+    <main x-show="view === 'learning'" x-transition:enter="transition ease-out duration-500" class="pt-28 pb-20 px-6 min-h-screen bg-slate-50 text-slate-900">
+        <div class="max-w-[1440px] mx-auto">
             
-            <div class="grid gap-4">
+            <div class="flex overflow-x-auto pb-6 mb-8 space-x-4 no-scrollbar">
                 <template x-for="(lessons, day) in academyData" :key="day">
-                    <div class="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm hover:shadow-md transition flex items-center justify-between group">
-                        <div class="flex items-center space-x-6">
-                            <div class="w-14 h-14 bg-slate-900 text-white rounded-2xl flex items-center justify-center font-black text-xl group-hover:bg-indigo-600 transition" x-text="day.split(' ')[1]"></div>
-                            <div>
-                                <h3 class="text-xl font-extrabold" x-text="day"></h3>
-                                <p class="text-slate-400 text-sm" x-text="lessons.length + ' видео-уроков подготовлены'"></p>
-                            </div>
-                        </div>
-                        <button @click="view = 'lesson'; activeDay = day; activeLesson = lessons[0]" 
-                                class="bg-slate-100 text-slate-900 px-6 py-3 rounded-xl font-bold hover:bg-indigo-600 hover:text-white transition">
-                            Открыть день
-                        </button>
-                    </div>
+                    <button @click="activeDay = day; activeLesson = lessons[0]" 
+                            :class="activeDay === day ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-200' : 'bg-white text-slate-400 hover:bg-slate-100'"
+                            class="flex-shrink-0 px-8 py-4 rounded-2xl font-black text-sm transition-all flex items-center space-x-3 border border-slate-200">
+                        <span class="opacity-50 text-xs">День</span>
+                        <span x-text="day.split(' ')[1]"></span>
+                    </button>
                 </template>
             </div>
-        </div>
-    </main>
 
-    <main x-show="view === 'lesson'" x-transition class="pt-24 pb-20 px-6">
-        <div class="max-w-[1400px] mx-auto">
             <div class="flex flex-col lg:flex-row gap-8">
-                
                 <div class="lg:w-3/4">
-                    <div class="aspect-video bg-black rounded-[2rem] shadow-2xl overflow-hidden border-8 border-white relative group">
-                        <div class="absolute inset-0 bg-slate-900 flex items-center justify-center">
-                             <div class="text-center">
-                                <div class="w-24 h-24 bg-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-2xl shadow-indigo-500/50 group-hover:scale-110 transition">
-                                    <svg class="w-10 h-10 text-white fill-current" viewBox="0 0 20 20"><path d="M4.5 2.691l12 7.309-12 7.309V2.691z"/></svg>
+                    <div class="aspect-video bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl relative border-[12px] border-white">
+                        <div class="absolute inset-0 flex items-center justify-center group">
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl cursor-pointer group-hover:scale-110 transition">
+                                    <svg class="w-10 h-10 text-white fill-current translate-x-1" viewBox="0 0 20 20"><path d="M4.5 2.691l12 7.309-12 7.309V2.691z"/></svg>
                                 </div>
-                                <p class="text-indigo-200 font-bold tracking-widest uppercase text-xs" x-text="activeDay"></p>
-                                <h2 class="text-white text-2xl font-black mt-2" x-text="activeLesson"></h2>
-                             </div>
+                                <h2 class="text-white text-3xl font-black italic tracking-tight" x-text="activeLesson"></h2>
+                                <p class="text-indigo-300 mt-2 font-bold uppercase text-xs tracking-widest">Проигрывание доступно</p>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="mt-10 bg-white p-10 rounded-[2rem] shadow-sm border border-slate-100">
-                        <div class="flex items-center space-x-3 mb-6">
-                            <span class="bg-indigo-600 text-white px-3 py-1 rounded-lg text-xs font-black uppercase" x-text="activeDay"></span>
-                            <span class="text-slate-300">/</span>
-                            <span class="text-slate-500 font-bold" x-text="activeLesson"></span>
-                        </div>
-                        <h2 class="text-4xl font-black mb-6">Детали занятия</h2>
-                        <p class="text-slate-600 text-xl leading-relaxed">
-                            Добро пожаловать на обучение! В этом уроке мы детально проработаем тему <span class="text-indigo-600 font-bold" x-text="activeLesson"></span>. Проверьте дополнительные материалы под плеером.
-                        </p>
                     </div>
                 </div>
-                
+
                 <div class="lg:w-1/4">
-                    <div class="bg-white border border-slate-100 rounded-[2rem] p-6 shadow-sm sticky top-24 max-h-[80vh] flex flex-col">
-                        <h3 class="font-black text-xl mb-6 px-2 flex items-center justify-between">
-                            Прогресс дня
-                            <span class="text-xs bg-slate-100 px-2 py-1 rounded text-slate-500" x-text="activeDay"></span>
-                        </h3>
-                        
-                        <div class="space-y-3 overflow-y-auto custom-scrollbar pr-2">
+                    <div class="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm">
+                        <div class="mb-8">
+                            <p class="text-[10px] font-black text-indigo-500 uppercase tracking-[0.2em] mb-1">Программа обучения</p>
+                            <h3 class="text-2xl font-black" x-text="activeDay"></h3>
+                        </div>
+                        <div class="space-y-4">
                             <template x-for="(lesson, index) in academyData[activeDay]" :key="index">
                                 <div @click="activeLesson = lesson" 
-                                     :class="activeLesson === lesson ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-200' : 'bg-slate-50 text-slate-600 hover:bg-indigo-50'"
-                                     class="flex items-center p-5 rounded-2xl cursor-pointer transition-all duration-300 border border-transparent">
-                                    <div :class="activeLesson === lesson ? 'bg-white/20' : 'bg-indigo-100 text-indigo-600'" 
-                                         class="w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black mr-4 shrink-0" 
-                                         x-text="index + 1"></div>
-                                    <span class="text-sm font-extrabold leading-tight" x-text="lesson"></span>
-                                </div>
-                            </template>
-                        </div>
-
-                        <div class="mt-8 pt-6 border-t border-slate-100">
-                             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Другие дни</p>
-                             <div class="flex flex-wrap gap-2">
-                                <template x-for="(lessons, day) in academyData" :key="day">
-                                    <button @click="activeDay = day; activeLesson = academyData[day][0]" 
-                                            :class="activeDay === day ? 'border-indigo-600 bg-indigo-50 text-indigo-600' : 'border-slate-200 text-slate-400'"
-                                            class="w-10 h-10 rounded-xl border-2 font-bold text-xs transition"
-                                            x-text="day.split(' ')[1]"></button>
-                                </template>
-                             </div>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-    </main>
-
-    <footer class="py-12 text-center">
-        <p class="text-slate-400 text-xs font-medium">© 2026 ALPHA ACADEMY • Сделано с помощью Альфа-разума</p>
-    </footer>
-
-</body>
-</html>
+                                     :class="activeLesson === lesson ? 'bg-indigo-50 border-indigo-200 text-indigo-70
