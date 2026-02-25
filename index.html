@@ -18,25 +18,61 @@
       x-data="{ 
         view: 'home', 
         activeDay: 'Понедельник',
-        activeLesson: 'Урок 1.1',
-        // --- БЛОК РЕДАКТИРОВАНИЯ КОНТЕНТА ---
+        activeLessonName: 'Урок 1.1',
+        activeVideoId: 'dQw4w9WgXcQ', 
+        
+        // --- БЛОК РЕДАКТИРОВАНИЯ: [Название, ID_видео_YouTube] ---
         academy: {
-            'Понедельник': ['варим борщ', 'варим суп', 'варим плов', 'жарим чебуреки', 'лускаем семки'],
-            'Вторник': ['Урок 2.1', 'Урок 2.2', 'Урок 2.3', 'Урок 2.4', 'Урок 2.5'],
-            'Среда': ['Урок 3.1', 'Урок 3.2', 'Урок 3.3', 'Урок 3.4', 'Урок 3.5'],
-            'Четверг': ['Урок 4.1', 'Урок 4.2', 'Урок 4.3', 'Урок 4.4', 'Урок 4.5'],
-            'Пятница': ['Урок 5.1', 'Урок 5.2', 'Урок 5.3', 'Урок 5.4', 'Урок 5.5']
+            'Понедельник': [
+                ['варим борщ', 'dQw4w9WgXcQ'], 
+                ['варим суп', 'dQw4w9WgXcQ'],
+                ['варим плов', 'dQw4w9WgXcQ'],
+                ['жарим чебуреки', 'dQw4w9WgXcQ'],
+                ['Выхатной', 'dQw4w9WgXcQ']
+            ],
+            'Вторник': [
+                ['Урок 2.1', 'dQw4w9WgXcQ'],
+                ['Урок 2.2', 'dQw4w9WgXcQ'],
+                ['Урок 2.3', 'dQw4w9WgXcQ'],
+                ['Урок 2.4', 'dQw4w9WgXcQ'],
+                ['Урок 2.5', 'dQw4w9WgXcQ']
+            ],
+            'Среда': [
+                ['Урок 3.1', 'dQw4w9WgXcQ'],
+                ['Урок 3.2', 'dQw4w9WgXcQ'],
+                ['Урок 3.3', 'dQw4w9WgXcQ'],
+                ['Урок 3.4', 'dQw4w9WgXcQ'],
+                ['Урок 3.5', 'dQw4w9WgXcQ']
+            ],
+            'Четверг': [
+                ['Урок 4.1', 'dQw4w9WgXcQ'],
+                ['Урок 4.2', 'dQw4w9WgXcQ'],
+                ['Урок 4.3', 'dQw4w9WgXcQ'],
+                ['Урок 4.4', 'dQw4w9WgXcQ'],
+                ['Урок 4.5', 'dQw4w9WgXcQ']
+            ],
+            'Пятница': [
+                ['Урок 5.1', 'dQw4w9WgXcQ'],
+                ['Урок 5.2', 'dQw4w9WgXcQ'],
+                ['Урок 5.3', 'dQw4w9WgXcQ'],
+                ['Урок 5.4', 'dQw4w9WgXcQ'],
+                ['Урок 5.5', 'dQw4w9WgXcQ']
+            ]
+        },
+        
+        selectLesson(lessonData) {
+            this.activeLessonName = lessonData[0];
+            this.activeVideoId = lessonData[1];
         }
-        // ------------------------------------
       }">
 
     <nav class="fixed w-full z-50 px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center glass rounded-2xl px-6 py-3">
             <div class="flex items-center space-x-2 cursor-pointer" @click="view = 'home'">
-                <div class="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center font-black text-2xl shadow-lg shadow-indigo-500/20 text-white">A</div>
-                <span class="text-xl font-bold tracking-tight text-white">ALPHA<span class="text-indigo-400">.EDU</span></span>
+                <div class="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center font-black text-2xl shadow-lg text-white">A</div>
+                <span class="text-xl font-bold tracking-tight text-white uppercase">Alpha<span class="text-indigo-400">.Edu</span></span>
             </div>
-            <button @click="view = 'learning'" class="bg-indigo-500 hover:bg-indigo-600 px-6 py-2.5 rounded-xl text-sm font-bold transition shadow-lg shadow-indigo-500/25 text-white">
+            <button @click="view = 'learning'" class="bg-indigo-500 hover:bg-indigo-600 px-6 py-2.5 rounded-xl text-sm font-bold transition text-white">
                 Личный кабинет
             </button>
         </div>
@@ -46,30 +82,24 @@
         <section class="min-h-screen flex items-center justify-center px-6 hero-gradient relative overflow-hidden text-center">
             <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 40px 40px;"></div>
             <div class="max-w-5xl mx-auto relative z-10">
-                <span class="inline-block px-4 py-1.5 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-black uppercase tracking-[0.2em] mb-6 border border-indigo-500/20">Мировой стандарт обучения</span>
                 <h1 class="text-6xl md:text-8xl font-black mb-8 leading-[1.1] tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400">
-                    Твое будущее <br> порешает Смит :).
+                    Твое будущее <br> начинается здесь.
                 </h1>
-                <p class="text-xl text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed">
-                    Интенсивная программа приготовления борща.
-                </p>
-                <div class="flex flex-col md:flex-row justify-center gap-6">
-                    <button @click="view = 'learning'" class="bg-white text-[#0f172a] px-10 py-5 rounded-2xl font-black text-lg hover:bg-indigo-400 hover:text-white transition shadow-2xl">
-                        Начать обучение
-                    </button>
-                </div>
+                <button @click="view = 'learning'" class="bg-white text-[#0f172a] px-10 py-5 rounded-2xl font-black text-lg hover:bg-indigo-400 hover:text-white transition shadow-2xl">
+                    Начать обучение
+                </button>
             </div>
         </section>
     </main>
 
     <main x-show="view === 'learning'" x-transition class="pt-28 pb-20 px-6 min-h-screen bg-slate-50 text-slate-900">
-        <div class="max-w-7xl mx-auto text-left">
+        <div class="max-w-7xl mx-auto">
             
             <div class="flex overflow-x-auto pb-6 mb-8 space-x-4 no-scrollbar">
                 <template x-for="(lessons, day) in academy" :key="day">
-                    <button @click="activeDay = day; activeLesson = lessons[0]" 
-                            :class="activeDay === day ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-200 border-indigo-600' : 'bg-white text-slate-400 hover:bg-slate-100 border-slate-200'"
-                            class="flex-shrink-0 px-8 py-4 rounded-2xl font-black text-sm transition-all border shadow-sm">
+                    <button @click="activeDay = day; selectLesson(lessons[0])" 
+                            :class="activeDay === day ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-200' : 'bg-white text-slate-400 hover:bg-slate-100'"
+                            class="flex-shrink-0 px-8 py-4 rounded-2xl font-black text-sm transition-all border border-slate-200 shadow-sm">
                         <span x-text="day"></span>
                     </button>
                 </template>
@@ -77,35 +107,30 @@
 
             <div class="flex flex-col lg:flex-row gap-8">
                 <div class="lg:w-2/3">
-                    <div class="aspect-video bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl relative border-[12px] border-white group">
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <div class="text-center">
-                                <div class="w-20 h-20 bg-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition cursor-pointer">
-                                    <svg class="w-8 h-8 text-white fill-current" viewBox="0 0 20 20"><path d="M4.5 2.691l12 7.309-12 7.309V2.691z"/></svg>
-                                </div>
-                                <h3 class="text-white text-xl font-bold" x-text="activeLesson"></h3>
-                            </div>
-                        </div>
+                    <div class="aspect-video bg-black rounded-[2.5rem] overflow-hidden shadow-2xl relative border-[12px] border-white">
+                        <iframe class="w-full h-full" 
+                                :src="'https://www.youtube.com/embed/' + activeVideoId" 
+                                frameborder="0" 
+                                allow="autoplay; encrypted-media; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
                     </div>
                     <div class="mt-8 bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm">
-                        <h2 class="text-3xl font-black mb-2 text-slate-900">Описание занятия</h2>
-                        <p class="text-slate-500">Вы изучаете модуль: <strong class="text-indigo-600" x-text="activeLesson"></strong></p>
+                        <h2 class="text-3xl font-black mb-2 text-slate-900" x-text="activeLessonName"></h2>
+                        <p class="text-slate-500">Обучающий модуль • <span x-text="activeDay"></span></p>
                     </div>
                 </div>
 
-                <div class="lg:w-1/3">
+                <div class="lg:w-1/3 text-left">
                     <div class="bg-white rounded-[2rem] p-8 border border-slate-200 shadow-sm">
-                        <div class="mb-6">
-                            <p class="text-[10px] font-black text-indigo-500 uppercase tracking-widest mb-1">Программа дня</p>
-                            <h3 class="text-2xl font-black text-slate-900" x-text="activeDay"></h3>
-                        </div>
-                        <div class="space-y-3">
+                        <h3 class="text-2xl font-black text-slate-900 mb-6" x-text="activeDay"></h3>
+                        <div class="space-y-3 text-left">
                             <template x-for="(lesson, index) in academy[activeDay]" :key="index">
-                                <div @click="activeLesson = lesson" 
-                                     :class="activeLesson === lesson ? 'bg-indigo-50 border-indigo-500 text-indigo-700 shadow-sm' : 'bg-slate-50 border-transparent text-slate-400 hover:bg-slate-100'"
+                                <div @click="selectLesson(lesson)" 
+                                     :class="activeLessonName === lesson[0] ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'bg-slate-50 border-transparent text-slate-400 hover:bg-slate-100'"
                                      class="p-5 rounded-2xl border-2 cursor-pointer transition-all flex items-center">
                                     <span class="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center text-xs font-black mr-4 text-slate-900" x-text="index + 1"></span>
-                                    <span class="font-bold text-sm" x-text="lesson"></span>
+                                    <span class="font-bold text-sm" x-text="lesson[0]"></span>
                                 </div>
                             </template>
                         </div>
@@ -121,6 +146,3 @@
 
 </body>
 </html>
-
-
-
