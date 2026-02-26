@@ -3,105 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALPHA FORUM | PRO</title>
+    <title>ALPHA FORUM ULTIMATE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; color: #1e293b; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; color: #1e293b; }
         [x-cloak] { display: none !important; }
-        .forum-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid #e2e8f0; }
-        .forum-card:hover { transform: translateY(-4px); border-color: #4f46e5; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(0,0,0,0.05); }
+        .admin-glow { border: 2px solid #ef4444 !important; box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); }
     </style>
 </head>
-<body x-data="forumSystem()" x-init="initApp()">
+<body x-data="forumApp()" x-init="init()">
 
-    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-slate-200">
+    <header class="bg-white/70 backdrop-blur-xl border-b border-slate-200 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-            <div class="flex items-center space-x-3 cursor-pointer" @click="view = 'list'">
-                <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200 text-white font-black text-xl">A</div>
-                <span class="text-2xl font-black tracking-tighter uppercase">Alpha<span class="text-indigo-600">Forum</span></span>
+            <div class="flex items-center space-x-4 cursor-pointer" @click="goHome()">
+                <div class="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center shadow-2xl">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2.5" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+                </div>
+                <div class="leading-none">
+                    <span class="text-2xl font-black tracking-tighter block">ALPHA<span class="text-indigo-600 italic">CORE</span></span>
+                    <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-slate-400">Community Engine</span>
+                </div>
+            </div>
+
+            <div class="flex-1 max-w-md mx-10 hidden md:block">
+                <input x-model="search" type="text" placeholder="Поиск по обсуждениям..." class="w-full bg-slate-100 border-none rounded-2xl px-6 py-3 text-sm font-medium focus:ring-2 focus:ring-indigo-500 transition">
             </div>
 
             <div class="flex items-center space-x-4">
                 <template x-if="!user">
-                    <button @click="authMode = 'login'; showAuthModal = true" class="text-sm font-bold text-slate-600 hover:text-indigo-600 transition">Войти</button>
+                    <button @click="showAuth = true" class="bg-indigo-600 text-white px-6 py-3 rounded-2xl font-bold text-sm shadow-xl shadow-indigo-200 hover:bg-indigo-700 transition">Войти</button>
                 </template>
                 <template x-if="user">
                     <div class="flex items-center space-x-4">
-                        <span class="text-sm font-bold text-slate-900 bg-slate-100 px-4 py-2 rounded-full" x-text="'@' + user.name"></span>
-                        <button @click="logout()" class="text-xs font-bold text-red-500 uppercase tracking-widest">Выйти</button>
+                        <div class="text-right hidden sm:block">
+                            <p class="text-sm font-black text-slate-900" x-text="user.name"></p>
+                            <p class="text-[9px] font-bold uppercase" :class="user.role === 'admin' ? 'text-red-500' : 'text-indigo-500'" x-text="user.role"></p>
+                        </div>
+                        <button @click="logout()" class="p-3 bg-slate-100 rounded-xl hover:bg-red-50 transition text-slate-400 hover:text-red-500">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                        </button>
                     </div>
                 </template>
-                <button @click="openCreateTopic()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-2xl font-black text-sm shadow-xl shadow-indigo-100 transition-all">
-                    Создать тему
-                </button>
             </div>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-6 py-10 flex flex-col lg:flex-row gap-8">
-        <aside class="lg:w-1/4 space-y-4">
-            <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4 mb-2 text-left">Категории</h3>
-            <nav class="space-y-1">
-                <template x-for="cat in categories">
-                    <button @click="activeCategory = cat; view = 'list'" 
-                            :class="activeCategory === cat ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-100' : 'bg-white text-slate-600 hover:bg-slate-50'"
-                            class="w-full text-left px-6 py-4 rounded-2xl font-bold text-sm transition-all flex justify-between items-center">
-                        <span x-text="cat"></span>
-                    </button>
-                </template>
-            </nav>
+        
+        <aside class="lg:w-1/4 space-y-6">
+            <button @click="openCreateTopic()" class="w-full bg-indigo-600 text-white py-5 rounded-[2rem] font-black text-lg shadow-2xl shadow-indigo-200 hover:scale-[1.02] transition active:scale-95 flex items-center justify-center gap-3">
+                <span>+ Новая тема</span>
+            </button>
+
+            <div class="bg-white rounded-[2rem] p-6 border border-slate-200 shadow-sm">
+                <h3 class="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-4 ml-2">Разделы</h3>
+                <div class="space-y-1">
+                    <template x-for="cat in categories">
+                        <button @click="activeCat = cat; view = 'list'" 
+                                :class="activeCat === cat ? 'bg-indigo-50 text-indigo-600' : 'text-slate-500 hover:bg-slate-50'"
+                                class="w-full text-left px-5 py-3.5 rounded-2xl font-bold text-sm transition-all flex justify-between">
+                            <span x-text="cat"></span>
+                            <span class="opacity-30" x-text="getTopicCount(cat)"></span>
+                        </button>
+                    </template>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 rounded-[2rem] p-8 text-white relative overflow-hidden">
+                <div class="relative z-10">
+                    <h4 class="text-xl font-black mb-1">Статистика</h4>
+                    <p class="text-xs text-slate-400 mb-6">Активность за 24ч</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div><p class="text-2xl font-black" x-text="topics.length"></p><p class="text-[10px] uppercase font-bold text-slate-500 tracking-tighter">Темы</p></div>
+                        <div><p class="text-2xl font-black" x-text="totalReplies"></p><p class="text-[10px] uppercase font-bold text-slate-500 tracking-tighter">Ответы</p></div>
+                    </div>
+                </div>
+                <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-indigo-600 rounded-full blur-3xl opacity-20"></div>
+            </div>
         </aside>
 
         <section class="lg:w-3/4">
-            <div x-show="view === 'list'" class="space-y-4 text-left">
-                <h2 class="text-4xl font-black tracking-tighter mb-8" x-text="activeCategory"></h2>
+            
+            <div x-show="view === 'list'" x-transition:enter="transition duration-300" class="space-y-4">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-3xl font-black tracking-tighter" x-text="activeCat"></h2>
+                </div>
+
                 <template x-for="topic in filteredTopics" :key="topic.id">
-                    <div @click="openTopic(topic)" class="bg-white p-8 rounded-[2.5rem] forum-card cursor-pointer">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <span class="text-[10px] font-black uppercase text-indigo-500 mb-2 block" x-text="topic.category"></span>
-                                <h3 class="text-2xl font-extrabold text-slate-900 mb-3" x-text="topic.title"></h3>
-                                <p class="text-sm font-bold text-slate-400">Автор: <span class="text-slate-900" x-text="topic.author"></span> • <span x-text="topic.date"></span></p>
+                    <div :class="topic.role === 'admin' ? 'admin-glow bg-white' : 'bg-white border-slate-200'" class="p-6 rounded-[2.5rem] border hover:border-indigo-400 transition-all cursor-pointer shadow-sm relative group" @click="openTopic(topic)">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="text-left">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 bg-slate-100 text-slate-500 rounded" x-text="topic.category"></span>
+                                    <template x-if="topic.pinned"><span class="text-[10px] font-black uppercase text-amber-500">📌 Закреплено</span></template>
+                                </div>
+                                <h3 class="text-2xl font-extrabold text-slate-900 mb-3 group-hover:text-indigo-600 transition" x-text="topic.title"></h3>
+                                <div class="flex items-center space-x-4 text-xs font-bold text-slate-400">
+                                    <span class="flex items-center gap-2">
+                                        <div class="w-5 h-5 bg-indigo-100 rounded flex items-center justify-center text-[10px] text-indigo-600" x-text="topic.author[0].toUpperCase()"></div>
+                                        <span :class="topic.role === 'admin' ? 'text-red-500' : 'text-slate-700'" x-text="topic.author"></span>
+                                    </span>
+                                    <span>•</span>
+                                    <span x-text="topic.date"></span>
+                                </div>
                             </div>
-                            <div class="bg-slate-50 px-4 py-2 rounded-xl text-xs font-black text-slate-400" x-text="topic.replies.length + ' ОТВЕТОВ'"></div>
+                            <div class="flex flex-col items-end gap-2">
+                                <div class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-2xl text-xs font-black" x-text="topic.replies.length + ' ответов'"></div>
+                                <template x-if="user?.role === 'admin'">
+                                    <button @click.stop="deleteTopic(topic.id)" class="text-red-400 hover:text-red-600 p-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                                </template>
+                            </div>
                         </div>
                     </div>
                 </template>
             </div>
 
-            <div x-show="view === 'detail'" x-cloak class="text-left">
-                <button @click="view = 'list'" class="mb-6 text-sm font-bold text-indigo-600 uppercase tracking-widest flex items-center">← Назад</button>
-                <div class="bg-white rounded-[3rem] p-10 shadow-sm border border-slate-100 mb-6">
-                    <h2 class="text-4xl font-black tracking-tight mb-10 text-slate-900 border-b pb-8" x-text="selectedTopic?.title"></h2>
-                    <div class="space-y-8">
-                        <template x-for="reply in selectedTopic?.replies">
-                            <div class="flex gap-6">
-                                <div class="w-12 h-12 bg-indigo-100 rounded-2xl flex-shrink-0 flex items-center justify-center font-black text-indigo-600" x-text="reply.author[0].toUpperCase()"></div>
-                                <div>
-                                    <div class="flex items-center space-x-3 mb-1">
-                                        <span class="font-black text-slate-900" x-text="reply.author"></span>
-                                        <span class="text-xs text-slate-400" x-text="reply.date"></span>
+            <div x-show="view === 'detail'" x-cloak x-transition>
+                <button @click="view = 'list'" class="mb-6 font-black text-indigo-600 text-xs uppercase tracking-widest flex items-center">← Назад к списку</button>
+                
+                <div class="bg-white rounded-[3rem] border border-slate-200 overflow-hidden shadow-sm mb-8 text-left">
+                    <div class="p-10 border-b border-slate-50 bg-slate-50/50">
+                        <h2 class="text-4xl font-black text-slate-900 leading-tight mb-2" x-text="selectedTopic?.title"></h2>
+                        <p class="text-sm text-slate-400 font-bold">Тема создана участником <span class="text-indigo-600" x-text="selectedTopic?.author"></span></p>
+                    </div>
+                    
+                    <div class="p-10 space-y-10">
+                        <template x-for="(reply, rIdx) in selectedTopic?.replies">
+                            <div class="flex gap-6 relative group animate-fade-in">
+                                <div class="w-14 h-14 bg-slate-100 rounded-[1.25rem] flex-shrink-0 flex items-center justify-center font-black text-xl text-slate-400" x-text="reply.author[0].toUpperCase()"></div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center gap-3">
+                                            <span class="font-black text-slate-900" x-text="reply.author"></span>
+                                            <template x-if="reply.role === 'admin'"><span class="text-[8px] bg-red-500 text-white px-2 py-0.5 rounded-full font-black uppercase">Mod</span></template>
+                                            <span class="text-xs text-slate-400 font-bold" x-text="reply.date"></span>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <button @click="likeReply(rIdx)" class="flex items-center gap-1 text-slate-400 hover:text-indigo-600 transition">
+                                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"></path></svg>
+                                                <span class="text-xs font-black" x-text="reply.likes || 0"></span>
+                                            </button>
+                                            <template x-if="user?.role === 'admin' || user?.name === reply.author">
+                                                <button @click="deleteReply(rIdx)" class="text-red-300 hover:text-red-600 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                                            </template>
+                                        </div>
                                     </div>
-                                    <p class="text-slate-600 leading-relaxed" x-text="reply.text"></p>
+                                    <div class="bg-slate-50 p-6 rounded-3xl border border-slate-100 text-slate-600 font-medium leading-relaxed" x-text="reply.text"></div>
                                 </div>
                             </div>
                         </template>
                     </div>
                 </div>
 
-                <div class="bg-white p-8 rounded-[2.5rem] shadow-sm">
-                    <template x-if="user">
+                <div class="bg-white p-10 rounded-[3rem] border border-slate-200 shadow-sm">
+                    <template x-if="user && !isBanned(user.name)">
                         <div>
-                            <textarea x-model="newReply" class="w-full bg-slate-50 border-none rounded-2xl p-6 focus:ring-2 focus:ring-indigo-500 mb-4" placeholder="Ваше сообщение..." rows="3"></textarea>
-                            <button @click="addReply()" class="bg-slate-900 text-white px-8 py-4 rounded-2xl font-black w-full hover:bg-indigo-600 transition">Отправить</button>
+                            <h4 class="text-xl font-black mb-6">Ваше сообщение</h4>
+                            <textarea x-model="newReply" class="w-full bg-slate-50 border-2 border-slate-100 rounded-[2rem] p-6 focus:border-indigo-500 focus:ring-0 transition font-medium" rows="4" placeholder="Напишите аргументированный ответ..."></textarea>
+                            <button @click="addReply()" class="mt-6 bg-slate-900 text-white px-12 py-5 rounded-2xl font-black shadow-xl hover:bg-indigo-600 transition w-full md:w-auto">Отправить ответ</button>
                         </div>
                     </template>
+                    <template x-if="user && isBanned(user.name)">
+                        <div class="bg-red-50 text-red-600 p-8 rounded-3xl border border-red-100 text-center font-black">ВЫ ЗАБАНЕНЫ ЗА НАРУШЕНИЕ ПРАВИЛ</div>
+                    </template>
                     <template x-if="!user">
-                        <div class="text-center py-4">
-                            <p class="text-slate-400 font-bold mb-4">Чтобы отвечать, нужно войти в систему</p>
-                            <button @click="authMode = 'login'; showAuthModal = true" class="text-indigo-600 font-black border-b-2 border-indigo-600">Войти или Создать аккаунт</button>
+                        <div class="text-center py-6">
+                            <p class="text-slate-400 font-bold mb-4">Присоединяйтесь к обсуждению</p>
+                            <button @click="showAuth = true" class="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold">Войти / Регистрация</button>
                         </div>
                     </template>
                 </div>
@@ -109,100 +180,137 @@
         </section>
     </main>
 
-    <div x-show="showAuthModal" class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/80 backdrop-blur-sm" x-cloak>
-        <div class="bg-white w-full max-w-md rounded-[3rem] p-10 shadow-2xl relative">
-            <h3 class="text-3xl font-black text-slate-900 mb-2" x-text="authMode === 'login' ? 'С возвращением' : 'Регистрация'"></h3>
-            <p class="text-slate-400 text-sm font-bold mb-8" x-text="authMode === 'login' ? 'Войдите в свой аккаунт' : 'Присоединяйтесь к сообществу'"></p>
-            
+    <div x-show="showAuth" class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/80 backdrop-blur-md" x-cloak x-transition>
+        <div class="bg-white w-full max-w-md rounded-[3rem] p-12 shadow-2xl relative">
+            <h3 class="text-4xl font-black text-slate-900 mb-2 tracking-tight">Привет!</h3>
+            <p class="text-slate-400 font-bold mb-10">Введите имя для входа. <br><span class="text-indigo-500">Admin</span> — для модератора.</p>
             <div class="space-y-4">
-                <input x-model="authForm.name" type="text" placeholder="Имя пользователя" class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 font-bold">
-                <input x-model="authForm.pass" type="password" placeholder="Пароль" class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 font-bold">
-                <button @click="handleAuth()" class="w-full bg-indigo-600 text-white py-5 rounded-2xl font-black text-lg shadow-xl" x-text="authMode === 'login' ? 'Войти' : 'Создать аккаунт'"></button>
-                <button @click="authMode = authMode === 'login' ? 'reg' : 'login'" class="w-full text-slate-400 font-bold text-sm" x-text="authMode === 'login' ? 'Нет аккаунта? Регистрация' : 'Уже есть аккаунт? Войти'"></button>
+                <input x-model="authName" @keyup.enter="login()" type="text" placeholder="Имя профиля" class="w-full bg-slate-100 border-none rounded-2xl px-6 py-5 font-bold text-lg">
+                <button @click="login()" class="w-full bg-indigo-600 text-white py-5 rounded-2xl font-black text-xl shadow-2xl shadow-indigo-200 hover:bg-indigo-700 transition">Войти на форум</button>
             </div>
-            <button @click="showAuthModal = false" class="absolute top-8 right-8 text-slate-300 hover:text-slate-900 transition">✕</button>
+            <button @click="showAuth = false" class="absolute top-8 right-8 text-slate-300 hover:text-slate-900 transition text-2xl">✕</button>
         </div>
     </div>
 
-    <div x-show="showCreateModal" class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/80 backdrop-blur-sm" x-cloak>
-        <div class="bg-white w-full max-w-xl rounded-[3rem] p-10 shadow-2xl relative text-left">
-            <h3 class="text-3xl font-black text-slate-900 mb-8">Новое обсуждение</h3>
-            <div class="space-y-4">
-                <input x-model="newTopicData.title" type="text" placeholder="Заголовок темы" class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 font-bold text-lg text-slate-900">
-                <select x-model="newTopicData.cat" class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 font-bold text-slate-900">
+    <div x-show="showCreate" class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/80 backdrop-blur-md" x-cloak x-transition>
+        <div class="bg-white w-full max-w-2xl rounded-[3rem] p-12 shadow-2xl relative text-left">
+            <h3 class="text-3xl font-black text-slate-900 mb-8 tracking-tight">Новое обсуждение</h3>
+            <div class="space-y-6">
+                <input x-model="newTopic.title" type="text" placeholder="Заголовок темы (макс. 100 знаков)" class="w-full bg-slate-50 border-none rounded-2xl px-6 py-5 font-bold text-xl">
+                <select x-model="newTopic.cat" class="w-full bg-slate-50 border-none rounded-2xl px-6 py-5 font-bold text-slate-500">
                     <template x-for="cat in categories.filter(c => c !== 'Все темы')">
                         <option :value="cat" x-text="cat"></option>
                     </template>
                 </select>
-                <button @click="createTopic()" class="w-full bg-indigo-600 text-white py-5 rounded-2xl font-black text-lg shadow-xl">Опубликовать</button>
+                <textarea x-model="newTopic.text" placeholder="Опишите суть вопроса..." class="w-full bg-slate-50 border-none rounded-2xl px-6 py-5 font-medium" rows="4"></textarea>
+                <div class="flex items-center gap-4" x-show="user?.role === 'admin'">
+                    <input type="checkbox" x-model="newTopic.pinned" id="pin"><label for="pin" class="text-sm font-bold text-amber-600">Закрепить тему 📌</label>
+                </div>
+                <button @click="createTopic()" class="w-full bg-indigo-600 text-white py-5 rounded-2xl font-black text-xl shadow-2xl">Опубликовать</button>
             </div>
-            <button @click="showCreateModal = false" class="absolute top-8 right-8 text-slate-300 hover:text-slate-900 transition">✕</button>
+            <button @click="showCreate = false" class="absolute top-8 right-8 text-slate-300 hover:text-slate-900 transition text-2xl">✕</button>
         </div>
     </div>
 
     <script>
-        function forumSystem() {
+        function forumApp() {
             return {
                 view: 'list',
                 user: null,
-                showAuthModal: false,
-                authMode: 'login',
-                showCreateModal: false,
-                activeCategory: 'Все темы',
+                activeCat: 'Все темы',
+                search: '',
+                showAuth: false,
+                showCreate: false,
+                authName: '',
                 selectedTopic: null,
                 newReply: '',
-                authForm: { name: '', pass: '' },
-                newTopicData: { title: '', cat: 'Общее' },
+                newTopic: { title: '', cat: 'Общее', text: '', pinned: false },
                 
-                categories: ['Все темы', 'Общее', 'Разработка', 'Идеи', 'Помощь'],
-                topics: [
-                    { id: 1, title: 'Правила нашего сообщества', category: 'Общее', author: 'Admin', date: '26.02.2026', replies: [{ author: 'Admin', text: 'Соблюдайте вежливость!', date: '12:00' }] },
-                    { id: 2, title: 'Как создать крутой UI?', category: 'Разработка', author: 'DesignHero', date: '25.02.2026', replies: [{ author: 'DesignHero', text: 'Используйте Tailwind!', date: '15:00' }] }
-                ],
+                categories: ['Все темы', 'Общее', 'Разработка', 'Идеи', 'Помощь', 'Оффтоп'],
+                
+                // База данных в памяти
+                topics: [],
+                banned: [],
 
-                initApp() {
-                    const savedUser = localStorage.getItem('forum_user');
+                init() {
+                    const savedUser = localStorage.getItem('alpha_user');
+                    const savedTopics = localStorage.getItem('alpha_topics');
+                    const savedBanned = localStorage.getItem('alpha_banned');
+                    
                     if (savedUser) this.user = JSON.parse(savedUser);
+                    if (savedBanned) this.banned = JSON.parse(savedBanned);
+                    
+                    if (savedTopics) {
+                        this.topics = JSON.parse(savedTopics);
+                    } else {
+                        // Начальные данные, если пусто
+                        this.topics = [
+                            { id: 1, title: 'Добро пожаловать в Alpha Core!', category: 'Общее', author: 'System', role: 'admin', date: '01.01.2026', pinned: true, replies: [{author: 'System', role: 'admin', text: 'Пожалуйста, соблюдайте правила общения.', date: '12:00', likes: 10}] }
+                        ];
+                    }
                 },
 
-                get filteredTopics() {
-                    return this.activeCategory === 'Все темы' ? this.topics : this.topics.filter(t => t.category === this.activeCategory);
+                save() {
+                    localStorage.setItem('alpha_topics', JSON.stringify(this.topics));
+                    localStorage.setItem('alpha_banned', JSON.stringify(this.banned));
                 },
 
-                handleAuth() {
-                    if (!this.authForm.name || !this.authForm.pass) return alert('Заполните поля');
-                    this.user = { name: this.authForm.name };
-                    localStorage.setItem('forum_user', JSON.stringify(this.user));
-                    this.showAuthModal = false;
-                    this.authForm = { name: '', pass: '' };
+                login() {
+                    if (!this.authName.trim()) return;
+                    if (this.isBanned(this.authName)) return alert('Этот аккаунт забанен!');
+                    
+                    this.user = { 
+                        name: this.authName, 
+                        role: this.authName.toLowerCase() === 'admin' ? 'admin' : 'user' 
+                    };
+                    localStorage.setItem('alpha_user', JSON.stringify(this.user));
+                    this.showAuth = false;
+                    this.authName = '';
                 },
 
                 logout() {
                     this.user = null;
-                    localStorage.removeItem('forum_user');
+                    localStorage.removeItem('alpha_user');
+                    this.view = 'list';
+                },
+
+                goHome() {
+                    this.view = 'list';
+                    this.activeCat = 'Все темы';
+                    this.search = '';
+                },
+
+                getTopicCount(cat) {
+                    return cat === 'Все темы' ? this.topics.length : this.topics.filter(t => t.category === cat).length;
+                },
+
+                get filteredTopics() {
+                    let filtered = this.topics;
+                    if (this.activeCat !== 'Все темы') filtered = filtered.filter(t => t.category === this.activeCat);
+                    if (this.search) filtered = filtered.filter(t => t.title.toLowerCase().includes(this.search.toLowerCase()));
+                    return filtered.sort((a, b) => (b.pinned - a.pinned) || (new Date(b.date) - new Date(a.date)));
                 },
 
                 openCreateTopic() {
-                    if (!this.user) {
-                        this.authMode = 'login';
-                        this.showAuthModal = true;
-                    } else {
-                        this.showCreateModal = true;
-                    }
+                    if (!this.user) return this.showAuth = true;
+                    this.showCreate = true;
                 },
 
                 createTopic() {
-                    if (!this.newTopicData.title) return;
+                    if (!this.newTopic.title || !this.newTopic.text) return;
                     this.topics.unshift({
                         id: Date.now(),
-                        title: this.newTopicData.title,
-                        category: this.newTopicData.cat,
+                        title: this.newTopic.title,
+                        category: this.newTopic.cat,
                         author: this.user.name,
-                        date: 'Сегодня',
-                        replies: [{ author: this.user.name, text: 'Тема открыта для обсуждения.', date: 'Только что' }]
+                        role: this.user.role,
+                        date: new Date().toLocaleDateString(),
+                        pinned: this.newTopic.pinned,
+                        replies: [{ author: this.user.name, role: this.user.role, text: this.newTopic.text, date: 'Только что', likes: 0 }]
                     });
-                    this.showCreateModal = false;
-                    this.newTopicData.title = '';
+                    this.save();
+                    this.showCreate = false;
+                    this.newTopic = { title: '', cat: 'Общее', text: '', pinned: false };
                 },
 
                 openTopic(topic) {
@@ -214,14 +322,39 @@
                     if (!this.newReply.trim()) return;
                     this.selectedTopic.replies.push({
                         author: this.user.name,
+                        role: this.user.role,
                         text: this.newReply,
-                        date: 'Только что'
+                        date: 'Только что',
+                        likes: 0
                     });
+                    this.save();
                     this.newReply = '';
+                },
+
+                likeReply(idx) {
+                    this.selectedTopic.replies[idx].likes = (this.selectedTopic.replies[idx].likes || 0) + 1;
+                    this.save();
+                },
+
+                deleteTopic(id) {
+                    this.topics = this.topics.filter(t => t.id !== id);
+                    this.save();
+                },
+
+                deleteReply(idx) {
+                    if (confirm('Удалить сообщение?')) {
+                        this.selectedTopic.replies.splice(idx, 1);
+                        this.save();
+                    }
+                },
+
+                isBanned(name) { return this.banned.includes(name); },
+                
+                get totalReplies() {
+                    return this.topics.reduce((acc, topic) => acc + topic.replies.length, 0);
                 }
             }
         }
     </script>
 </body>
 </html>
-
