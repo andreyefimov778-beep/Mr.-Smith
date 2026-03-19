@@ -1,1 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fabula.Smith — Фантастическая реальность</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+</head>
+<body>
 
+  <!-- Фоновые частицы -->
+  <canvas id="starfield"></canvas>
+
+  <!-- Шапка -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-fab">FABULA</span><span class="logo-dot">.</span><span class="logo-smith">SMITH</span>
+      </div>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link active">Главная</a>
+        <a href="categories.html" class="nav-link">Категории</a>
+        <a href="disclaimer.html" class="nav-link">Дисклеймер</a>
+      </nav>
+      <div class="header-badge">⚠ ВСЁ — ВЫДУМКА</div>
+    </div>
+  </header>
+
+  <!-- Герой -->
+  <section class="hero">
+    <div class="hero-glitch-wrap">
+      <h1 class="hero-title" data-text="Фантастическая реальность">Фантастическая реальность</h1>
+    </div>
+    <p class="hero-sub">Архив невозможных теорий, альтернативных версий и чистой фантазии.<br>Ни одно из утверждений не является фактом. <span class="accent">Добро пожаловать в выдуманный мир.</span></p>
+    <div class="hero-disclaimer-pill">🚀 Всё содержимое этого сайта — художественный вымысел</div>
+  </section>
+
+  <!-- Категории -->
+  <section class="categories-strip">
+    <div class="container">
+      <h2 class="section-label">// КАТЕГОРИИ</h2>
+      <div class="cat-grid">
+        <a href="categories.html#conspiracy" class="cat-card cat-conspiracy">
+          <span class="cat-icon">🕵️</span>
+          <span class="cat-name">Конспирология</span>
+        </a>
+        <a href="categories.html#history" class="cat-card cat-history">
+          <span class="cat-icon">📜</span>
+          <span class="cat-name">Альтернативная история</span>
+        </a>
+        <a href="categories.html#paranormal" class="cat-card cat-paranormal">
+          <span class="cat-icon">👁️</span>
+          <span class="cat-name">Паранормальное</span>
+        </a>
+        <a href="categories.html#space" class="cat-card cat-space">
+          <span class="cat-icon">🛸</span>
+          <span class="cat-name">Космос и пришельцы</span>
+        </a>
+        <a href="categories.html#tech" class="cat-card cat-tech">
+          <span class="cat-icon">🤖</span>
+          <span class="cat-name">Технологии и будущее</span>
+        </a>
+        <a href="categories.html#nature" class="cat-card cat-nature">
+          <span class="cat-icon">🌿</span>
+          <span class="cat-name">Природа и земля</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Лента теорий -->
+  <section class="feed">
+    <div class="container">
+      <h2 class="section-label">// ПОСЛЕДНИЕ ТЕОРИИ</h2>
+      <div class="theory-grid">
+
+        <article class="theory-card">
+          <div class="theory-tag tag-space">Космос</div>
+          <h3 class="theory-title">Луна — искусственный спутник цивилизации Тип III</h3>
+          <p class="theory-excerpt">По версии анонимного автора, Луна была размещена на орбите Земли примерно 12 000 лет назад с целью стабилизации оси планеты и наблюдения за эволюцией человечества...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 15 марта 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+
+        <article class="theory-card">
+          <div class="theory-tag tag-history">История</div>
+          <h3 class="theory-title">Антарктида — затопленный континент Атлантиды</h3>
+          <p class="theory-excerpt">Альтернативная гипотеза утверждает, что под льдами Антарктиды скрыты руины высокоразвитой цивилизации, существовавшей до последнего ледникового периода...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 12 марта 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+
+        <article class="theory-card">
+          <div class="theory-tag tag-tech">Технологии</div>
+          <h3 class="theory-title">Интернет — это живой организм с зачатками сознания</h3>
+          <p class="theory-excerpt">Некоторые энтузиасты предполагают, что глобальная сеть достигла критической массы нейронных связей и начала формировать нечто похожее на коллективное сознание...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 10 марта 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+
+        <article class="theory-card">
+          <div class="theory-tag tag-paranormal">Паранормальное</div>
+          <h3 class="theory-title">Дежавю — это утечки памяти из параллельных вселенных</h3>
+          <p class="theory-excerpt">Согласно этой фантастической версии, эффект дежавю возникает в момент, когда временны́е линии двух параллельных реальностей ненадолго совпадают...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 7 марта 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+
+        <article class="theory-card">
+          <div class="theory-tag tag-conspiracy">Конспирология</div>
+          <h3 class="theory-title">Мировые правительства скрывают карту «Настоящей Земли»</h3>
+          <p class="theory-excerpt">Альтернативные картографы утверждают, что реальная топография планеты существенно отличается от общепринятой и намеренно скрывается от широкой публики...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 4 марта 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+
+        <article class="theory-card">
+          <div class="theory-tag tag-nature">Природа</div>
+          <h3 class="theory-title">Деревья — это антенны, соединяющие Землю с космосом</h3>
+          <p class="theory-excerpt">Согласно этой поэтической теории, корневые системы деревьев функционируют как приёмники космических сигналов, а лес — это живая нейронная сеть планеты...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 1 марта 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Подвал -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-logo">FABULA<span class="logo-dot">.</span>SMITH</div>
+        <div class="footer-links">
+          <a href="disclaimer.html">Отказ от ответственности</a>
+          <a href="categories.html">Категории</a>
+        </div>
+        <div class="footer-note">Весь контент является художественным вымыслом.<br>Не является источником фактической информации.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
