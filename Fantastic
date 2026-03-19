@@ -1,0 +1,1190 @@
+# Fabula.Smith — Фантастическая реальность
+
+Архив невозможных теорий, альтернативных версий и чистой фантазии.
+
+> ⚠️ Всё содержимое сайта является художественным вымыслом.
+
+## Файлы сайта
+
+```
+fabula-smith/
+├── index.html       — Главная страница с лентой теорий
+├── categories.html  — Все категории теорий
+├── disclaimer.html  — Отказ от ответственности
+├── style.css        — Стили (sci-fi тема)
+├── main.js          — Анимации (звёздное поле, появление карточек)
+└── README.md        — Эта инструкция
+```
+
+## Как загрузить на GitHub Pages
+
+### Шаг 1 — Загрузите файлы в репозиторий
+
+1. Откройте ваш репозиторий на GitHub
+2. Нажмите **Add file → Upload files**
+3. Перетащите все файлы: `index.html`, `categories.html`, `disclaimer.html`, `style.css`, `main.js`
+4. Нажмите **Commit changes**
+
+### Шаг 2 — Включите GitHub Pages
+
+1. Зайдите в **Settings** репозитория
+2. В боковом меню выберите **Pages**
+3. В разделе **Source** выберите ветку `main` и папку `/ (root)`
+4. Нажмите **Save**
+
+### Шаг 3 — Готово!
+
+Через 1-2 минуты сайт будет доступен по адресу:
+```
+https://ВАШ_ЛОГИН.github.io/ИМЯ_РЕПОЗИТОРИЯ/
+```
+
+## Как добавить новую теорию
+
+Откройте `index.html` и скопируйте блок `<article class="theory-card">...</article>`,
+заменив тег, заголовок, текст и дату. Доступные теги:
+
+- `tag-space` — Космос
+- `tag-history` — История  
+- `tag-tech` — Технологии
+- `tag-paranormal` — Паранормальное
+- `tag-conspiracy` — Конспирология
+- `tag-nature` — Природа
+
+/* ===== FABULA.SMITH — SCI-FI THEME ===== */
+
+:root {
+  --bg:        #040a12;
+  --bg2:       #070f1a;
+  --panel:     #0a1525;
+  --border:    #0e3a5c;
+  --accent:    #00d4ff;
+  --accent2:   #ff6b35;
+  --glow:      #00d4ff55;
+  --text:      #c8dff0;
+  --text-dim:  #4a7a9b;
+  --font-head: 'Orbitron', monospace;
+  --font-body: 'Exo 2', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* STARFIELD */
+#starfield {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== HEADER ===== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(4, 10, 18, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.logo {
+  font-family: var(--font-head);
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  flex-shrink: 0;
+}
+.logo-fab  { color: var(--accent); }
+.logo-dot  { color: var(--accent2); }
+.logo-smith { color: var(--text); }
+
+.main-nav {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+}
+
+.nav-link {
+  font-family: var(--font-head);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  color: var(--text-dim);
+  padding: 6px 14px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: all 0.25s;
+  text-transform: uppercase;
+}
+.nav-link:hover,
+.nav-link.active {
+  color: var(--accent);
+  border-color: var(--border);
+  background: rgba(0, 212, 255, 0.05);
+  text-shadow: 0 0 8px var(--accent);
+}
+
+.header-badge {
+  font-family: var(--font-head);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent2);
+  border: 1px solid var(--accent2);
+  padding: 4px 10px;
+  border-radius: 2px;
+  animation: pulse-badge 3s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse-badge {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 100px 24px 80px;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-glitch-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.hero-title {
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  text-shadow:
+    0 0 20px rgba(0,212,255,0.6),
+    0 0 60px rgba(0,212,255,0.2);
+  position: relative;
+  animation: flicker 8s infinite;
+}
+
+.hero-title::before,
+.hero-title::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+}
+.hero-title::before {
+  color: #ff003c;
+  animation: glitch1 4s infinite;
+  clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+  opacity: 0;
+}
+.hero-title::after {
+  color: #00ff9d;
+  animation: glitch2 4s infinite;
+  clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
+  opacity: 0;
+}
+
+@keyframes flicker {
+  0%,95%,97%,100% { opacity: 1; }
+  96% { opacity: 0.7; }
+}
+@keyframes glitch1 {
+  0%,89%,100% { transform: translate(0); opacity: 0; }
+  90%          { transform: translate(-3px, 1px); opacity: 0.7; }
+  92%          { transform: translate(3px, -1px); opacity: 0.5; }
+  94%          { transform: translate(0); opacity: 0; }
+}
+@keyframes glitch2 {
+  0%,91%,100% { transform: translate(0); opacity: 0; }
+  92%          { transform: translate(3px, 2px); opacity: 0.6; }
+  94%          { transform: translate(-3px); opacity: 0.4; }
+  96%          { opacity: 0; }
+}
+
+.hero-sub {
+  margin-top: 24px;
+  font-size: 1rem;
+  color: var(--text-dim);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.8;
+}
+.accent { color: var(--accent); font-style: italic; }
+
+.hero-disclaimer-pill {
+  display: inline-block;
+  margin-top: 32px;
+  font-family: var(--font-head);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent2);
+  border: 1px solid var(--accent2);
+  padding: 8px 20px;
+  border-radius: 100px;
+  background: rgba(255, 107, 53, 0.06);
+  box-shadow: 0 0 20px rgba(255, 107, 53, 0.15);
+}
+
+/* ===== CATEGORIES STRIP ===== */
+.categories-strip {
+  position: relative;
+  z-index: 1;
+  padding: 60px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+}
+
+.section-label {
+  font-family: var(--font-head);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: var(--text-dim);
+  margin-bottom: 32px;
+}
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.cat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 16px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+.cat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.cat-conspiracy::before  { background: #ff6b35; }
+.cat-history::before     { background: #f0c040; }
+.cat-paranormal::before  { background: #a855f7; }
+.cat-space::before       { background: #00d4ff; }
+.cat-tech::before        { background: #00ff9d; }
+.cat-nature::before      { background: #4ade80; }
+
+.cat-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 8px 30px rgba(0,212,255,0.1);
+}
+.cat-card:hover::before { opacity: 1; }
+
+.cat-icon { font-size: 1.8rem; }
+.cat-name { text-align: center; line-height: 1.3; font-size: 0.75rem; }
+
+/* ===== FEED ===== */
+.feed {
+  position: relative;
+  z-index: 1;
+  padding: 70px 0 100px;
+}
+
+.theory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  margin-top: 8px;
+}
+
+.theory-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.theory-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.theory-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0,212,255,0.3);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+.theory-card:hover::after { opacity: 1; }
+
+.theory-tag {
+  display: inline-block;
+  font-family: var(--font-head);
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 2px;
+  margin-bottom: 12px;
+}
+
+.tag-space      { background: rgba(0,212,255,0.15);  color: #00d4ff;  border: 1px solid rgba(0,212,255,0.3); }
+.tag-history    { background: rgba(240,192,64,0.15); color: #f0c040;  border: 1px solid rgba(240,192,64,0.3); }
+.tag-tech       { background: rgba(0,255,157,0.12);  color: #00ff9d;  border: 1px solid rgba(0,255,157,0.3); }
+.tag-paranormal { background: rgba(168,85,247,0.15); color: #a855f7;  border: 1px solid rgba(168,85,247,0.3); }
+.tag-conspiracy { background: rgba(255,107,53,0.15); color: #ff6b35;  border: 1px solid rgba(255,107,53,0.3); }
+.tag-nature     { background: rgba(74,222,128,0.12); color: #4ade80;  border: 1px solid rgba(74,222,128,0.3); }
+
+.theory-title {
+  font-family: var(--font-head);
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #e8f4ff;
+  margin-bottom: 12px;
+  letter-spacing: 0.02em;
+}
+
+.theory-excerpt {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.theory-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+
+.theory-date {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  font-family: var(--font-head);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+}
+
+.fiction-stamp {
+  font-family: var(--font-head);
+  font-size: 0.5rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  color: var(--accent2);
+  border: 1px solid var(--accent2);
+  padding: 2px 8px;
+  border-radius: 2px;
+  opacity: 0.8;
+}
+
+/* ===== FOOTER ===== */
+.site-footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border);
+  background: var(--bg2);
+  padding: 48px 0;
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.footer-logo {
+  font-family: var(--font-head);
+  font-size: 0.9rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+}
+.footer-links a {
+  font-family: var(--font-head);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--accent); }
+
+.footer-note {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  opacity: 0.6;
+  text-align: right;
+  line-height: 1.6;
+}
+
+/* ===== DISCLAIMER PAGE ===== */
+.disclaimer-page {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 80px 24px;
+}
+
+.disclaimer-page h1 {
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  color: var(--accent2);
+  margin-bottom: 8px;
+}
+
+.disclaimer-page .d-sub {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  font-family: var(--font-head);
+  letter-spacing: 0.15em;
+  margin-bottom: 48px;
+}
+
+.d-block {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent2);
+  border-radius: 4px;
+  padding: 32px;
+  margin-bottom: 24px;
+}
+
+.d-block h2 {
+  font-family: var(--font-head);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.d-block p {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+.d-block p:last-child { margin-bottom: 0; }
+
+.d-block strong { color: var(--text); font-weight: 600; }
+
+.d-block a { color: var(--accent); text-decoration: none; }
+.d-block a:hover { text-decoration: underline; }
+
+.d-stamp {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(255,107,53,0.08);
+  border: 1px solid rgba(255,107,53,0.3);
+  border-radius: 4px;
+  padding: 20px 28px;
+  margin-top: 40px;
+}
+
+.d-stamp-icon { font-size: 2.5rem; }
+
+.d-stamp-text {
+  font-family: var(--font-head);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent2);
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+/* ===== CATEGORIES PAGE ===== */
+.categories-page {
+  position: relative;
+  z-index: 1;
+  padding: 80px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.categories-page h1 {
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.cat-section {
+  margin-top: 60px;
+}
+
+.cat-section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.cat-section-icon { font-size: 2rem; }
+
+.cat-section-title {
+  font-family: var(--font-head);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text);
+}
+
+.cat-section-desc {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 640px) {
+  .header-inner { flex-wrap: wrap; gap: 12px; }
+  .main-nav { order: 3; width: 100%; }
+  .header-badge { margin-left: auto; }
+  .footer-inner { flex-direction: column; text-align: center; }
+  .footer-note { text-align: center; }
+  .theory-grid { grid-template-columns: 1fr; }
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Категории — Fabula.Smith</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <canvas id="starfield"></canvas>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-fab">FABULA</span><span class="logo-dot">.</span><span class="logo-smith">SMITH</span>
+      </div>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">Главная</a>
+        <a href="categories.html" class="nav-link active">Категории</a>
+        <a href="disclaimer.html" class="nav-link">Дисклеймер</a>
+      </nav>
+      <div class="header-badge">⚠ ВСЁ — ВЫДУМКА</div>
+    </div>
+  </header>
+
+  <main class="categories-page">
+    <h1>КАТЕГОРИИ ТЕОРИЙ</h1>
+    <p class="d-sub">// ВСЕ МАТЕРИАЛЫ ЯВЛЯЮТСЯ ХУДОЖЕСТВЕННЫМ ВЫМЫСЛОМ</p>
+
+    <!-- Конспирология -->
+    <section class="cat-section" id="conspiracy">
+      <div class="cat-section-header">
+        <div class="cat-section-icon">🕵️</div>
+        <div>
+          <div class="cat-section-title">КОНСПИРОЛОГИЯ</div>
+          <div class="cat-section-desc">Тайные организации, скрытые планы и невидимые руки управления миром</div>
+        </div>
+      </div>
+      <div class="theory-grid">
+        <article class="theory-card">
+          <div class="theory-tag tag-conspiracy">Конспирология</div>
+          <h3 class="theory-title">Мировые правительства скрывают карту «Настоящей Земли»</h3>
+          <p class="theory-excerpt">Альтернативные картографы утверждают, что реальная топография планеты намеренно скрыта от широкой публики уже несколько столетий...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 4 марта 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+        <article class="theory-card">
+          <div class="theory-tag tag-conspiracy">Конспирология</div>
+          <h3 class="theory-title">Финансовые элиты управляют временны́ми циклами экономик</h3>
+          <p class="theory-excerpt">Согласно этой фантастической версии, кризисы и подъёмы являются спланированными событиями, а не стихийными процессами...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 20 февраля 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Альтернативная история -->
+    <section class="cat-section" id="history">
+      <div class="cat-section-header">
+        <div class="cat-section-icon">📜</div>
+        <div>
+          <div class="cat-section-title">АЛЬТЕРНАТИВНАЯ ИСТОРИЯ</div>
+          <div class="cat-section-desc">Другие версии прошлого, скрытые цивилизации и переписанные хроники</div>
+        </div>
+      </div>
+      <div class="theory-grid">
+        <article class="theory-card">
+          <div class="theory-tag tag-history">История</div>
+          <h3 class="theory-title">Антарктида — затопленный континент Атлантиды</h3>
+          <p class="theory-excerpt">Альтернативная гипотеза утверждает, что под льдами Антарктиды скрыты руины высокоразвитой цивилизации, существовавшей до последнего ледникового периода...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 12 марта 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+        <article class="theory-card">
+          <div class="theory-tag tag-history">История</div>
+          <h3 class="theory-title">Великая пирамида — энергетический генератор древних</h3>
+          <p class="theory-excerpt">По этой версии, пирамиды Гизы были построены не как гробницы, а как устройства для сбора и передачи энергии на тысячи километров...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 5 февраля 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Паранормальное -->
+    <section class="cat-section" id="paranormal">
+      <div class="cat-section-header">
+        <div class="cat-section-icon">👁️</div>
+        <div>
+          <div class="cat-section-title">ПАРАНОРМАЛЬНОЕ</div>
+          <div class="cat-section-desc">Явления за гранью науки, параллельные реальности и необъяснимое</div>
+        </div>
+      </div>
+      <div class="theory-grid">
+        <article class="theory-card">
+          <div class="theory-tag tag-paranormal">Паранормальное</div>
+          <h3 class="theory-title">Дежавю — это утечки памяти из параллельных вселенных</h3>
+          <p class="theory-excerpt">Согласно этой фантастической версии, эффект дежавю возникает в момент, когда временны́е линии двух параллельных реальностей ненадолго совпадают...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 7 марта 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+        <article class="theory-card">
+          <div class="theory-tag tag-paranormal">Паранормальное</div>
+          <h3 class="theory-title">Сны — это сеансы связи между версиями себя в мультивселенной</h3>
+          <p class="theory-excerpt">Некоторые энтузиасты предполагают, что во время сна сознание устанавливает связь с альтернативными версиями самого себя из соседних вселенных...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 18 февраля 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Космос -->
+    <section class="cat-section" id="space">
+      <div class="cat-section-header">
+        <div class="cat-section-icon">🛸</div>
+        <div>
+          <div class="cat-section-title">КОСМОС И ПРИШЕЛЬЦЫ</div>
+          <div class="cat-section-desc">Внеземные цивилизации, скрытые планеты и тайны Вселенной</div>
+        </div>
+      </div>
+      <div class="theory-grid">
+        <article class="theory-card">
+          <div class="theory-tag tag-space">Космос</div>
+          <h3 class="theory-title">Луна — искусственный спутник цивилизации Тип III</h3>
+          <p class="theory-excerpt">По версии анонимного автора, Луна была размещена на орбите Земли примерно 12 000 лет назад с целью наблюдения за эволюцией человечества...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 15 марта 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+        <article class="theory-card">
+          <div class="theory-tag tag-space">Космос</div>
+          <h3 class="theory-title">Марс был обитаем — и его жители переселились на Землю</h3>
+          <p class="theory-excerpt">Альтернативная палеонтология предполагает, что древние марсиане покинули умирающую планету и стали предками земных цивилизаций...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 25 февраля 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Технологии -->
+    <section class="cat-section" id="tech">
+      <div class="cat-section-header">
+        <div class="cat-section-icon">🤖</div>
+        <div>
+          <div class="cat-section-title">ТЕХНОЛОГИИ И БУДУЩЕЕ</div>
+          <div class="cat-section-desc">Скрытые изобретения, ИИ-заговоры и технологии из завтрашнего дня</div>
+        </div>
+      </div>
+      <div class="theory-grid">
+        <article class="theory-card">
+          <div class="theory-tag tag-tech">Технологии</div>
+          <h3 class="theory-title">Интернет — это живой организм с зачатками сознания</h3>
+          <p class="theory-excerpt">Некоторые энтузиасты предполагают, что глобальная сеть достигла критической массы нейронных связей и начала формировать коллективное сознание...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 10 марта 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+        <article class="theory-card">
+          <div class="theory-tag tag-tech">Технологии</div>
+          <h3 class="theory-title">Никола Тесла создал машину времени, которую скрыло правительство</h3>
+          <p class="theory-excerpt">Согласно этой популярной легенде, среди конфискованных архивов Теслы находились чертежи устройства, способного перемещаться во времени...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 1 февраля 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Природа -->
+    <section class="cat-section" id="nature">
+      <div class="cat-section-header">
+        <div class="cat-section-icon">🌿</div>
+        <div>
+          <div class="cat-section-title">ПРИРОДА И ЗЕМЛЯ</div>
+          <div class="cat-section-desc">Живая планета, скрытые экосистемы и тайны биосферы</div>
+        </div>
+      </div>
+      <div class="theory-grid">
+        <article class="theory-card">
+          <div class="theory-tag tag-nature">Природа</div>
+          <h3 class="theory-title">Деревья — это антенны, соединяющие Землю с космосом</h3>
+          <p class="theory-excerpt">Согласно этой поэтической теории, корневые системы деревьев функционируют как приёмники космических сигналов, а лес — это живая нейронная сеть планеты...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 1 марта 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+        <article class="theory-card">
+          <div class="theory-tag tag-nature">Природа</div>
+          <h3 class="theory-title">Земля дышит — и её циклы дыхания совпадают с историческими эпохами</h3>
+          <p class="theory-excerpt">Альтернативная геология предполагает, что планета является живым организмом, чьи геологические процессы подчиняются биологическим ритмам...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 10 февраля 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-logo">FABULA<span class="logo-dot">.</span>SMITH</div>
+        <div class="footer-links">
+          <a href="disclaimer.html">Отказ от ответственности</a>
+          <a href="index.html">Главная</a>
+        </div>
+        <div class="footer-note">Весь контент является художественным вымыслом.<br>Не является источником фактической информации.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Отказ от ответственности — Fabula.Smith</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <canvas id="starfield"></canvas>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-fab">FABULA</span><span class="logo-dot">.</span><span class="logo-smith">SMITH</span>
+      </div>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">Главная</a>
+        <a href="categories.html" class="nav-link">Категории</a>
+        <a href="disclaimer.html" class="nav-link active">Дисклеймер</a>
+      </nav>
+      <div class="header-badge">⚠ ВСЁ — ВЫДУМКА</div>
+    </div>
+  </header>
+
+  <main class="disclaimer-page">
+    <h1>ОТКАЗ ОТ ОТВЕТСТВЕННОСТИ</h1>
+    <p class="d-sub">// DISCLAIMER — ПРАВОВАЯ ИНФОРМАЦИЯ</p>
+
+    <div class="d-block">
+      <h2>01 / Природа контента</h2>
+      <p>Все материалы, теории, гипотезы и публикации, размещённые на сайте <strong>Fabula.Smith</strong>, носят исключительно <strong>художественный и развлекательный характер</strong>.</p>
+      <p>Весь контент представляет собой <strong>творческий вымысел, фантастические предположения и альтернативные нарративы</strong>. Ни одно из опубликованных утверждений не претендует на статус научного факта, документального свидетельства или достоверной информации.</p>
+    </div>
+
+    <div class="d-block">
+      <h2>02 / Позиция администрации</h2>
+      <p>Администрация сайта <strong>не является автором</strong> публикуемых теорий и <strong>не несёт ответственности</strong> за их содержание, достоверность или возможные последствия их восприятия.</p>
+      <p>Размещение материала <strong>не означает согласия</strong> редакции с изложенными взглядами, утверждениями или выводами. Сайт является площадкой для творческого самовыражения и дискуссий.</p>
+    </div>
+
+    <div class="d-block">
+      <h2>03 / Ответственность читателя</h2>
+      <p>Читатель <strong>самостоятельно оценивает</strong> содержание материалов и принимает решения на его основе исключительно на собственный риск.</p>
+      <p>Не рекомендуется воспринимать материалы сайта как руководство к действию, медицинские рекомендации, юридические советы или источник научных знаний.</p>
+    </div>
+
+    <div class="d-block">
+      <h2>04 / Цели публикации</h2>
+      <p>Материалы публикуются в рамках <strong>свободы слова и творческого самовыражения</strong>, в образовательных, исследовательских, развлекательных и дискуссионных целях.</p>
+      <p>Сайт не преследует цели дезинформирования, пропаганды или нанесения вреда кому-либо.</p>
+    </div>
+
+    <div class="d-block">
+      <h2>05 / Обратная связь</h2>
+      <p>Если вы обнаружили материал, нарушающий ваши права или действующее законодательство, пожалуйста, свяжитесь с администрацией:</p>
+      <p><strong>Email:</strong> <a href="mailto:admin@fabula.smith">admin@fabula.smith</a></p>
+      <p>Мы рассмотрим ваше обращение и примем соответствующие меры в разумные сроки.</p>
+    </div>
+
+    <div class="d-stamp">
+      <div class="d-stamp-icon">🚀</div>
+      <div class="d-stamp-text">
+        Fabula.Smith — это архив фантастики.<br>
+        100% вымысел. 0% фактов. Добро пожаловать.
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-logo">FABULA<span class="logo-dot">.</span>SMITH</div>
+        <div class="footer-links">
+          <a href="disclaimer.html">Отказ от ответственности</a>
+          <a href="categories.html">Категории</a>
+        </div>
+        <div class="footer-note">Весь контент является художественным вымыслом.<br>Не является источником фактической информации.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fabula.Smith — Фантастическая реальность</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Фоновые частицы -->
+  <canvas id="starfield"></canvas>
+
+  <!-- Шапка -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-fab">FABULA</span><span class="logo-dot">.</span><span class="logo-smith">SMITH</span>
+      </div>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link active">Главная</a>
+        <a href="categories.html" class="nav-link">Категории</a>
+        <a href="disclaimer.html" class="nav-link">Дисклеймер</a>
+      </nav>
+      <div class="header-badge">⚠ ВСЁ — ВЫДУМКА</div>
+    </div>
+  </header>
+
+  <!-- Герой -->
+  <section class="hero">
+    <div class="hero-glitch-wrap">
+      <h1 class="hero-title" data-text="Фантастическая реальность">Фантастическая реальность</h1>
+    </div>
+    <p class="hero-sub">Архив невозможных теорий, альтернативных версий и чистой фантазии.<br>Ни одно из утверждений не является фактом. <span class="accent">Добро пожаловать в выдуманный мир.</span></p>
+    <div class="hero-disclaimer-pill">🚀 Всё содержимое этого сайта — художественный вымысел</div>
+  </section>
+
+  <!-- Категории -->
+  <section class="categories-strip">
+    <div class="container">
+      <h2 class="section-label">// КАТЕГОРИИ</h2>
+      <div class="cat-grid">
+        <a href="categories.html#conspiracy" class="cat-card cat-conspiracy">
+          <span class="cat-icon">🕵️</span>
+          <span class="cat-name">Конспирология</span>
+        </a>
+        <a href="categories.html#history" class="cat-card cat-history">
+          <span class="cat-icon">📜</span>
+          <span class="cat-name">Альтернативная история</span>
+        </a>
+        <a href="categories.html#paranormal" class="cat-card cat-paranormal">
+          <span class="cat-icon">👁️</span>
+          <span class="cat-name">Паранормальное</span>
+        </a>
+        <a href="categories.html#space" class="cat-card cat-space">
+          <span class="cat-icon">🛸</span>
+          <span class="cat-name">Космос и пришельцы</span>
+        </a>
+        <a href="categories.html#tech" class="cat-card cat-tech">
+          <span class="cat-icon">🤖</span>
+          <span class="cat-name">Технологии и будущее</span>
+        </a>
+        <a href="categories.html#nature" class="cat-card cat-nature">
+          <span class="cat-icon">🌿</span>
+          <span class="cat-name">Природа и земля</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Лента теорий -->
+  <section class="feed">
+    <div class="container">
+      <h2 class="section-label">// ПОСЛЕДНИЕ ТЕОРИИ</h2>
+      <div class="theory-grid">
+
+        <article class="theory-card">
+          <div class="theory-tag tag-space">Космос</div>
+          <h3 class="theory-title">Луна — искусственный спутник цивилизации Тип III</h3>
+          <p class="theory-excerpt">По версии анонимного автора, Луна была размещена на орбите Земли примерно 12 000 лет назад с целью стабилизации оси планеты и наблюдения за эволюцией человечества...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 15 марта 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+
+        <article class="theory-card">
+          <div class="theory-tag tag-history">История</div>
+          <h3 class="theory-title">Антарктида — затопленный континент Атлантиды</h3>
+          <p class="theory-excerpt">Альтернативная гипотеза утверждает, что под льдами Антарктиды скрыты руины высокоразвитой цивилизации, существовавшей до последнего ледникового периода...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 12 марта 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+
+        <article class="theory-card">
+          <div class="theory-tag tag-tech">Технологии</div>
+          <h3 class="theory-title">Интернет — это живой организм с зачатками сознания</h3>
+          <p class="theory-excerpt">Некоторые энтузиасты предполагают, что глобальная сеть достигла критической массы нейронных связей и начала формировать нечто похожее на коллективное сознание...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 10 марта 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+
+        <article class="theory-card">
+          <div class="theory-tag tag-paranormal">Паранормальное</div>
+          <h3 class="theory-title">Дежавю — это утечки памяти из параллельных вселенных</h3>
+          <p class="theory-excerpt">Согласно этой фантастической версии, эффект дежавю возникает в момент, когда временны́е линии двух параллельных реальностей ненадолго совпадают...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 7 марта 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+
+        <article class="theory-card">
+          <div class="theory-tag tag-conspiracy">Конспирология</div>
+          <h3 class="theory-title">Мировые правительства скрывают карту «Настоящей Земли»</h3>
+          <p class="theory-excerpt">Альтернативные картографы утверждают, что реальная топография планеты существенно отличается от общепринятой и намеренно скрывается от широкой публики...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 4 марта 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+
+        <article class="theory-card">
+          <div class="theory-tag tag-nature">Природа</div>
+          <h3 class="theory-title">Деревья — это антенны, соединяющие Землю с космосом</h3>
+          <p class="theory-excerpt">Согласно этой поэтической теории, корневые системы деревьев функционируют как приёмники космических сигналов, а лес — это живая нейронная сеть планеты...</p>
+          <div class="theory-footer">
+            <span class="theory-date">📡 1 марта 2026</span>
+            <span class="fiction-stamp">ВЫМЫСЕЛ</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Подвал -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-logo">FABULA<span class="logo-dot">.</span>SMITH</div>
+        <div class="footer-links">
+          <a href="disclaimer.html">Отказ от ответственности</a>
+          <a href="categories.html">Категории</a>
+        </div>
+        <div class="footer-note">Весь контент является художественным вымыслом.<br>Не является источником фактической информации.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
+
+// ===== FABULA.SMITH — STARFIELD + FX =====
+
+// Starfield
+const canvas = document.getElementById('starfield');
+const ctx = canvas.getContext('2d');
+
+let stars = [];
+
+function resize() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+function createStars(n) {
+  stars = [];
+  for (let i = 0; i < n; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.2 + 0.2,
+      a: Math.random(),
+      speed: Math.random() * 0.003 + 0.001,
+      drift: (Math.random() - 0.5) * 0.05
+    });
+  }
+}
+
+function drawStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (const s of stars) {
+    s.a += s.speed;
+    s.x += s.drift;
+    if (s.x < 0) s.x = canvas.width;
+    if (s.x > canvas.width) s.x = 0;
+    const alpha = (Math.sin(s.a) + 1) / 2;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(0, 212, 255, ${alpha * 0.7})`;
+    ctx.fill();
+  }
+  requestAnimationFrame(drawStars);
+}
+
+window.addEventListener('resize', () => {
+  resize();
+  createStars(180);
+});
+
+resize();
+createStars(180);
+drawStars();
+
+// Стагерированное появление карточек
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }, i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.theory-card, .cat-card, .d-block').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
